@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stored accounts &middot; CampusHire Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="index.html">
+        <span class="mark">CH</span>
+        CampusHire
+      </a>
+      <nav>
+        <a class="btn btn-ghost btn-sm" href="login.html">Login</a>
+        <a class="btn btn-primary btn-sm" href="register.html">Register</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <h1 style="font-size:1.6rem">Accounts stored in this browser</h1>
+      <p class="muted">
+        A teaching aid, not part of the product. It shows exactly what is
+        sitting in <code>localStorage</code> under the key
+        <code>campushire.accounts</code> &mdash; which is the Stage 1
+        stand-in for the <code>users</code>, <code>students</code> and
+        <code>companies</code> tables.
+      </p>
+
+      <div class="notice notice-warn">
+        <strong>Notice what is missing:</strong> there is no password
+        column. The register page never saves one. In Stage 2 the password
+        travels to the server over HTTPS and is hashed with bcrypt before
+        it touches a database.
+      </div>
+
+      <div class="card" style="padding:0; overflow:hidden">
+        <div style="display:flex; align-items:center; gap:12px; padding:16px 20px; border-bottom:1px solid var(--line)">
+          <strong id="count-label">0 accounts</strong>
+          <span class="spacer" style="flex:1"></span>
+          <button class="btn btn-secondary btn-sm" id="btn-refresh">Refresh</button>
+          <button class="btn btn-danger btn-sm" id="btn-clear">Clear all</button>
+        </div>
+
+        <div class="table-wrap">
+          <table id="accounts-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Role</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Roll no</th>
+                <th>Branch</th>
+                <th>CGPA</th>
+                <th>Backlogs</th>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Registered</th>
+              </tr>
+            </thead>
+            <tbody id="accounts-body"></tbody>
+          </table>
+        </div>
+
+        <div class="empty-state hidden" id="empty-state">
+          <p><strong>Nothing stored yet.</strong></p>
+          <p class="small">
+            <a href="register.html">Register a student or recruiter</a>
+            and this table will fill up.
+          </p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:32px">Raw JSON</h3>
+      <p class="small muted">
+        The same thing the browser is holding. Open DevTools &rarr;
+        Application &rarr; Local Storage to see it there too.
+      </p>
+      <pre class="payload" id="raw-json">[]</pre>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      CampusHire Portal &middot; Stage 1 teaching aid
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script>
+  /* ---------------------------------------------------------------
+     Small enough to live inline. Renders the stored accounts as a
+     table, and demonstrates building rows from data rather than
+     writing HTML by hand.
+     --------------------------------------------------------------- */
+  (function () {
+    'use strict';
+
+    const tbody  = document.getElementById('accounts-body');
+    const empty  = document.getElementById('empty-state');
+    const label  = document.getElementById('count-label');
+    const raw    = document.getElementById('raw-json');
+    const table  = document.getElementById('accounts-table');
+
+    function cell(text) {
+      return '<td>' + (text === undefined || text === null || text === ''
+        ? '<span class="muted">&mdash;</span>'
+        : String(text)) + '</td>';
+    }
+
+    function statusOf(account) {
+      if (account.role === 'recruiter') {
+        return account.isApproved
+          ? '<span class="pill pill-student">approved</span>'
+          : '<span class="pill pill-recruiter">pending TPO</span>';
+      }
+      return account.isPlaced
+        ? '<span class="pill pill-recruiter">placed</span>'
+        : '<span class="pill pill-student">active</span>';
+    }
+
+    function render() {
+      const accounts = Storage.readAll();
+
+      label.textContent = accounts.length === 1
+        ? '1 account'
+        : accounts.length + ' accounts';
+
+      raw.textContent = JSON.stringify(accounts, null, 2);
+
+      empty.classList.toggle('hidden', accounts.length > 0);
+      table.classList.toggle('hidden', accounts.length === 0);
+
+      // Build the whole string once, then assign once. Appending row by
+      // row forces the browser to recalculate layout every time.
+      tbody.innerHTML = accounts.map(function (a) {
+        return '<tr>' +
+          cell(a.id) +
+          '<td><span class="pill pill-' + a.role + '">' + a.role + '</span></td>' +
+          cell(a.fullName) +
+          cell(a.email) +
+          cell(a.rollNo) +
+          cell(a.branch) +
+          cell(a.cgpa) +
+          cell(a.backlogs) +
+          cell(a.companyName) +
+          '<td>' + statusOf(a) + '</td>' +
+          cell(new Date(a.createdAt).toLocaleString()) +
+        '</tr>';
+      }).join('');
+    }
+
+    document.getElementById('btn-refresh').addEventListener('click', render);
+
+    document.getElementById('btn-clear').addEventListener('click', function () {
+      if (!confirm('Delete every account stored in this browser?')) return;
+      Storage.clearAll();
+      render();
+    });
+
+    render();
+  })();
+  </script>
+</body>
+</html>

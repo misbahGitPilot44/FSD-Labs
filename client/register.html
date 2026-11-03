@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register &middot; CampusHire Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="index.html">
+        <span class="mark">CH</span>
+        CampusHire
+      </a>
+      <nav>
+        <a class="btn btn-ghost btn-sm" href="login.html">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- ============ progress indicator ============ -->
+      <div class="stepper" id="stepper">
+        <div class="step active" data-step="1">
+          <span class="num">1</span><span class="txt">Account type</span>
+        </div>
+        <span class="step-line"></span>
+        <div class="step" data-step="2">
+          <span class="num">2</span><span class="txt">Your details</span>
+        </div>
+        <span class="step-line"></span>
+        <div class="step" data-step="3">
+          <span class="num">3</span><span class="txt">Done</span>
+        </div>
+      </div>
+
+      <!-- ============ STEP 1: choose account type ============ -->
+      <section id="step-type" class="card card-narrow">
+        <h2 class="text-center">Select account type</h2>
+        <p class="text-center muted">
+          The details we ask for next depend on who you are.
+        </p>
+
+        <div class="type-grid">
+          <!-- data-role is read by register.js; it is the only thing
+               that distinguishes these two buttons. -->
+          <button type="button" class="type-card" data-role="student">
+            <span class="icon" aria-hidden="true">&#127891;</span>
+            <h3>Student</h3>
+            <p>Final-year candidate looking for placement.</p>
+            <ul>
+              <li>Academic profile: roll number, branch, CGPA, backlogs</li>
+              <li>See jobs you are eligible for</li>
+              <li>Apply and track your applications</li>
+            </ul>
+          </button>
+
+          <button type="button" class="type-card" data-role="recruiter">
+            <span class="icon" aria-hidden="true">&#128188;</span>
+            <h3>Recruiter</h3>
+            <p>Hiring contact from a visiting company.</p>
+            <ul>
+              <li>Company details for TPO verification</li>
+              <li>Post jobs with an eligibility rule</li>
+              <li>Shortlist applicants and send offers</li>
+            </ul>
+          </button>
+        </div>
+
+        <p class="small muted text-center" style="margin:22px 0 0">
+          Are you from the placement cell? TPO accounts are issued by the
+          institute, not created here.
+        </p>
+      </section>
+
+      <!-- ============ STEP 2a: student form ============ -->
+      <section id="step-student" class="card card-narrow hidden">
+        <h2>Student registration</h2>
+        <p class="muted">
+          These details decide which job openings you are eligible for,
+          so enter them exactly as they appear on your academic record.
+        </p>
+
+        <div class="notice notice-err hidden" id="student-form-error"></div>
+
+        <!-- novalidate: we run our own checks so the messages are
+             consistent across browsers. -->
+        <form id="student-form" novalidate>
+          <div class="form-grid">
+
+            <div class="field full" data-field="fullName">
+              <label for="s-fullName">Full name</label>
+              <input id="s-fullName" name="fullName" type="text"
+                     autocomplete="name" placeholder="Asha Verma">
+              <p class="error" id="s-fullName-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="email">
+              <label for="s-email">Email address</label>
+              <input id="s-email" name="email" type="email"
+                     autocomplete="email" placeholder="asha@college.edu">
+              <p class="error" id="s-email-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="rollNo">
+              <label for="s-rollNo">University roll number</label>
+              <input id="s-rollNo" name="rollNo" type="text"
+                     placeholder="102103001" style="text-transform:uppercase">
+              <p class="error" id="s-rollNo-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="password">
+              <label for="s-password">Password</label>
+              <div class="pw-wrap">
+                <input id="s-password" name="password" type="password"
+                       autocomplete="new-password" placeholder="At least 8 characters">
+                <button type="button" class="pw-toggle" data-toggle="s-password">Show</button>
+              </div>
+              <p class="hint">8+ characters, with at least one letter and one number.</p>
+              <p class="error" id="s-password-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="confirmPassword">
+              <label for="s-confirmPassword">Confirm password</label>
+              <div class="pw-wrap">
+                <input id="s-confirmPassword" name="confirmPassword" type="password"
+                       autocomplete="new-password" placeholder="Type it again">
+                <button type="button" class="pw-toggle" data-toggle="s-confirmPassword">Show</button>
+              </div>
+              <p class="error" id="s-confirmPassword-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="branch">
+              <label for="s-branch">Branch of study</label>
+              <select id="s-branch" name="branch">
+                <option value="">Select your branch</option>
+                <!-- filled from CONFIG.BRANCHES by register.js -->
+              </select>
+              <p class="error" id="s-branch-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="cgpa">
+              <label for="s-cgpa">CGPA</label>
+              <input id="s-cgpa" name="cgpa" type="number"
+                     min="0" max="10" step="0.01" placeholder="8.24">
+              <p class="hint">Out of 10, up to two decimal places.</p>
+              <p class="error" id="s-cgpa-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="backlogs">
+              <label for="s-backlogs">Number of backlogs</label>
+              <input id="s-backlogs" name="backlogs" type="number"
+                     min="0" step="1" placeholder="0">
+              <p class="hint">Enter 0 if you have none.</p>
+              <p class="error" id="s-backlogs-error" role="alert"></p>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary btn-back">Back</button>
+            <span class="spacer"></span>
+            <button type="submit" class="btn btn-primary">Create student account</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ============ STEP 2b: recruiter form ============ -->
+      <section id="step-recruiter" class="card card-narrow hidden">
+        <h2>Recruiter registration</h2>
+        <p class="muted">
+          The company details below are what the TPO checks before your
+          account is approved to post jobs.
+        </p>
+
+        <div class="notice notice-err hidden" id="recruiter-form-error"></div>
+
+        <form id="recruiter-form" novalidate>
+          <div class="form-grid">
+
+            <div class="field full" data-field="fullName">
+              <label for="r-fullName">Full name</label>
+              <input id="r-fullName" name="fullName" type="text"
+                     autocomplete="name" placeholder="Rahul Mehta">
+              <p class="error" id="r-fullName-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="email">
+              <label for="r-email">Official email address</label>
+              <input id="r-email" name="email" type="email"
+                     autocomplete="email" placeholder="rahul@zoho.com">
+              <p class="hint">Company domain, not a personal mailbox.</p>
+              <p class="error" id="r-email-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="designation">
+              <label for="r-designation">Your designation</label>
+              <input id="r-designation" name="designation" type="text"
+                     placeholder="Campus Hiring Manager">
+              <p class="error" id="r-designation-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="password">
+              <label for="r-password">Password</label>
+              <div class="pw-wrap">
+                <input id="r-password" name="password" type="password"
+                       autocomplete="new-password" placeholder="At least 8 characters">
+                <button type="button" class="pw-toggle" data-toggle="r-password">Show</button>
+              </div>
+              <p class="hint">8+ characters, with at least one letter and one number.</p>
+              <p class="error" id="r-password-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="confirmPassword">
+              <label for="r-confirmPassword">Confirm password</label>
+              <div class="pw-wrap">
+                <input id="r-confirmPassword" name="confirmPassword" type="password"
+                       autocomplete="new-password" placeholder="Type it again">
+                <button type="button" class="pw-toggle" data-toggle="r-confirmPassword">Show</button>
+              </div>
+              <p class="error" id="r-confirmPassword-error" role="alert"></p>
+            </div>
+
+            <div class="field full" data-field="companyName">
+              <label for="r-companyName">Company name</label>
+              <input id="r-companyName" name="companyName" type="text"
+                     autocomplete="organization" placeholder="Zoho Corporation">
+              <p class="error" id="r-companyName-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="sector">
+              <label for="r-sector">Industry</label>
+              <select id="r-sector" name="sector">
+                <option value="">Select an industry</option>
+                <!-- filled from CONFIG.SECTORS by register.js -->
+              </select>
+              <p class="error" id="r-sector-error" role="alert"></p>
+            </div>
+
+            <div class="field" data-field="website">
+              <label for="r-website">Company website <span class="opt">(optional)</span></label>
+              <input id="r-website" name="website" type="url"
+                     placeholder="https://www.zoho.com">
+              <p class="hint">Helps the TPO verify the company faster.</p>
+              <p class="error" id="r-website-error" role="alert"></p>
+            </div>
+
+            <div class="field full" data-field="phone">
+              <label for="r-phone">Office contact number <span class="opt">(optional)</span></label>
+              <input id="r-phone" name="phone" type="tel"
+                     autocomplete="tel" placeholder="98765 43210">
+              <p class="error" id="r-phone-error" role="alert"></p>
+            </div>
+
+          </div>
+
+          <div class="notice notice-info" style="margin-top:20px">
+            <strong>What happens next.</strong> Your account is created
+            immediately, but it stays <em>pending approval</em> until the TPO
+            verifies the company. You cannot post a job until then.
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary btn-back">Back</button>
+            <span class="spacer"></span>
+            <button type="submit" class="btn btn-primary">Create recruiter account</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ============ STEP 3: success ============ -->
+      <section id="step-done" class="card card-narrow hidden">
+        <div class="success-mark" aria-hidden="true">&#10003;</div>
+        <h2 class="text-center" id="done-title">Account created</h2>
+        <p class="text-center muted" id="done-message"></p>
+
+        <div class="notice notice-warn">
+          <strong>Stage 1.</strong> This account lives only in this
+          browser&rsquo;s localStorage. Nothing has been sent to a server
+          yet, and the password was deliberately <em>not</em> saved.
+        </div>
+
+        <h3 style="margin-top:24px">What Stage 2 will send to the API</h3>
+        <p class="small muted">
+          The same object, over HTTPS, to
+          <code>POST /api/auth/register</code>. The server will validate it
+          again, hash the password and write the row.
+        </p>
+        <pre class="payload" id="payload-preview"></pre>
+
+        <div class="form-actions">
+          <a class="btn btn-secondary" href="accounts.html">View stored accounts</a>
+          <span class="spacer"></span>
+          <a class="btn btn-primary" href="login.html">Go to login</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      CampusHire Portal &middot; Stage 1 registration
+    </div>
+  </footer>
+
+  <!-- Order matters: config, then the pure helpers, then the page script. -->
+  <script src="js/config.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>

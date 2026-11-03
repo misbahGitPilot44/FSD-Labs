@@ -1,0 +1,386 @@
+/* =====================================================================
+   CampusHire Portal — shared stylesheet
+   Stage 1: front end only. No framework, plain CSS.
+   ===================================================================== */
+
+/* ---------- Design tokens: change the brand in one place ---------- */
+:root {
+  --accent:        #2563EB;
+  --accent-dark:   #1D4ED8;
+  --accent-tint:   #EFF4FF;
+  --ink:           #1F2937;
+  --quiet:         #6B7280;
+  --line:          #E5E7EB;
+  --bg:            #F8FAFC;
+  --card:          #FFFFFF;
+  --ok:            #15803D;
+  --ok-tint:       #F0FDF4;
+  --err:           #DC2626;
+  --err-tint:      #FEF2F2;
+  --warn:          #B45309;
+  --warn-tint:     #FFFBEB;
+
+  --radius:        10px;
+  --radius-lg:     14px;
+  --shadow:        0 1px 2px rgba(16, 24, 40, .06),
+                   0 4px 12px rgba(16, 24, 40, .05);
+  --maxw:          980px;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+h1, h2, h3 { line-height: 1.25; margin: 0 0 .4em; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1.05rem; }
+p  { margin: 0 0 1em; }
+a  { color: var(--accent); }
+
+/* ---------- Layout ---------- */
+.site-header {
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+.site-header .inner,
+.container {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.site-header .inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 64px;
+}
+.brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand .mark {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  display: grid; place-items: center;
+  font-size: .85rem; font-weight: 700;
+}
+.site-header nav { display: flex; gap: 8px; align-items: center; }
+
+main { padding: 40px 0 64px; }
+.site-footer {
+  border-top: 1px solid var(--line);
+  color: var(--quiet);
+  font-size: .85rem;
+  padding: 20px 0 40px;
+}
+
+/* ---------- Hero (landing page) ---------- */
+.hero { text-align: center; padding: 32px 0 8px; }
+.hero h1 { font-size: 2.6rem; letter-spacing: -.02em; }
+.hero .lede {
+  font-size: 1.1rem;
+  color: var(--quiet);
+  max-width: 620px;
+  margin: 0 auto 28px;
+}
+.hero-actions {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-dark); }
+.btn-secondary {
+  background: var(--card);
+  color: var(--ink);
+  border-color: var(--line);
+}
+.btn-secondary:hover { border-color: var(--quiet); }
+.btn-ghost { background: none; color: var(--quiet); padding: 8px 12px; }
+.btn-ghost:hover { color: var(--ink); }
+.btn-sm { padding: 7px 14px; font-size: .9rem; }
+.btn-danger { background: var(--err); color: #fff; }
+.btn:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, .35);
+  outline-offset: 2px;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 28px;
+}
+.card-narrow { max-width: 620px; margin: 0 auto; }
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 40px;
+}
+.role-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  text-align: left;
+}
+.role-card h3 { margin-bottom: .25em; }
+.role-card p { color: var(--quiet); font-size: .92rem; margin: 0; }
+.role-card .tag {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-tint);
+  border-radius: 999px;
+  padding: 3px 9px;
+  margin-bottom: 10px;
+}
+.role-card.muted .tag { color: var(--quiet); background: #F1F5F9; }
+
+/* ---------- Stepper ---------- */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.step {
+  display: flex; align-items: center; gap: 8px;
+  color: var(--quiet);
+  font-size: .9rem;
+}
+.step .num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  border: 1px solid var(--line);
+  background: var(--card);
+  font-size: .8rem; font-weight: 700;
+}
+.step.active { color: var(--ink); font-weight: 600; }
+.step.active .num { background: var(--accent); border-color: var(--accent); color: #fff; }
+.step.done .num { background: var(--ok); border-color: var(--ok); color: #fff; }
+.step-line { width: 28px; height: 1px; background: var(--line); }
+
+/* ---------- Account-type chooser ---------- */
+.type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+.type-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: border-color .15s, background .15s, transform .08s;
+}
+.type-card:hover { border-color: var(--accent); background: var(--accent-tint); }
+.type-card:active { transform: translateY(1px); }
+.type-card .icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--accent-tint);
+  color: var(--accent);
+  display: grid; place-items: center;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+.type-card h3 { margin-bottom: .2em; }
+.type-card p { color: var(--quiet); font-size: .9rem; margin: 0 0 10px; }
+.type-card ul {
+  margin: 0; padding-left: 18px;
+  color: var(--quiet); font-size: .85rem;
+}
+
+/* ---------- Forms ---------- */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 18px;
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field.full { grid-column: 1 / -1; }
+
+label {
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+label .opt { font-weight: 400; color: var(--quiet); }
+
+input, select {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--ink);
+  width: 100%;
+}
+input::placeholder { color: #9CA3AF; }
+input:focus, select:focus { border-color: var(--accent); }
+
+.hint { font-size: .8rem; color: var(--quiet); }
+
+/* Error state, set by JS */
+.field.invalid input,
+.field.invalid select { border-color: var(--err); background: var(--err-tint); }
+.error {
+  font-size: .8rem;
+  color: var(--err);
+  min-height: 1em;
+}
+.field:not(.invalid) .error { display: none; }
+
+/* Password field with show/hide */
+.pw-wrap { position: relative; }
+.pw-wrap input { padding-right: 62px; }
+.pw-toggle {
+  position: absolute; right: 6px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: 0;
+  font: inherit; font-size: .8rem; font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.form-actions {
+  display: flex; gap: 12px; align-items: center;
+  margin-top: 24px; padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.form-actions .spacer { flex: 1; }
+
+/* ---------- Notices ---------- */
+.notice {
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-size: .88rem;
+  margin-bottom: 18px;
+  border: 1px solid;
+}
+.notice-info { background: var(--accent-tint); border-color: #BFDBFE; color: #1E3A8A; }
+.notice-warn { background: var(--warn-tint); border-color: #FDE68A; color: #78350F; }
+.notice-err  { background: var(--err-tint);  border-color: #FECACA; color: #7F1D1D; }
+.notice-ok   { background: var(--ok-tint);   border-color: #BBF7D0; color: #14532D; }
+.notice strong { font-weight: 700; }
+
+/* ---------- Success panel ---------- */
+.success-mark {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--ok-tint);
+  color: var(--ok);
+  display: grid; place-items: center;
+  font-size: 1.6rem;
+  margin: 0 auto 16px;
+}
+.payload {
+  background: #0F172A;
+  color: #E2E8F0;
+  border-radius: var(--radius);
+  padding: 16px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .82rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre;
+  margin: 0;
+}
+
+/* ---------- Table (accounts viewer) ---------- */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+th { font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--quiet); }
+tbody tr:hover { background: var(--accent-tint); }
+.pill {
+  display: inline-block;
+  font-size: .74rem; font-weight: 700;
+  border-radius: 999px; padding: 2px 9px;
+}
+.pill-student  { background: var(--accent-tint); color: var(--accent); }
+.pill-recruiter{ background: #FEF3C7; color: var(--warn); }
+.empty-state { text-align: center; color: var(--quiet); padding: 48px 16px; }
+
+/* ---------- Utilities ---------- */
+.text-center { text-align: center; }
+.muted { color: var(--quiet); }
+.small { font-size: .85rem; }
+.mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
+.hidden { display: none !important; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .hero h1 { font-size: 2rem; }
+  .form-grid { grid-template-columns: 1fr; }
+  .type-grid { grid-template-columns: 1fr; }
+  .role-grid { grid-template-columns: 1fr; }
+  .card { padding: 20px; }
+  .step span.txt { display: none; }
+}

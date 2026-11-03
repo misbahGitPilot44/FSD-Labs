@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login &middot; CampusHire Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="index.html">
+        <span class="mark">CH</span>
+        CampusHire
+      </a>
+      <nav>
+        <a class="btn btn-primary btn-sm" href="register.html">Register</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="card card-narrow" style="max-width:460px">
+        <h2 class="text-center">Log in</h2>
+        <p class="text-center muted">
+          One form for all three roles. The server decides who you are.
+        </p>
+
+        <!-- TEACHING NOTE, worth reading out in class:
+             There is deliberately NO "I am a student / recruiter / TPO"
+             selector here. There is one users table and one
+             POST /api/auth/login endpoint. The server looks up the email,
+             verifies the password and reads the role column. The browser
+             is then told where to go. Three login pages would mean three
+             code paths and three places for a bug. -->
+
+        <div class="notice notice-warn">
+          <strong>Stage 1.</strong> Login is not wired up yet. Passwords are
+          not stored in the browser, so there is nothing to check against.
+          This form starts working in Stage 3, when the API and JWT exist.
+        </div>
+
+        <form id="login-form" novalidate>
+          <div class="form-grid">
+
+            <div class="field full" data-field="email">
+              <label for="l-email">Email address</label>
+              <input id="l-email" name="email" type="email"
+                     autocomplete="email" placeholder="you@example.com">
+              <p class="error" id="l-email-error" role="alert"></p>
+            </div>
+
+            <div class="field full" data-field="password">
+              <label for="l-password">Password</label>
+              <div class="pw-wrap">
+                <input id="l-password" name="password" type="password"
+                       autocomplete="current-password" placeholder="Your password">
+                <button type="button" class="pw-toggle" data-toggle="l-password">Show</button>
+              </div>
+              <p class="error" id="l-password-error" role="alert"></p>
+            </div>
+
+          </div>
+
+          <div class="notice notice-info hidden" id="login-result" style="margin-top:18px"></div>
+
+          <div class="form-actions">
+            <span class="spacer"></span>
+            <button type="submit" class="btn btn-primary">Log in</button>
+          </div>
+        </form>
+
+        <p class="text-center small muted" style="margin:18px 0 0">
+          No account yet? <a href="register.html">Register here</a>.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      CampusHire Portal &middot; Stage 1
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/validate.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>
